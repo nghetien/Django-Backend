@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        {% for item in form %}
+            <p>
+                {{ item.label_tag }}
+                {{ item }}
+                {% if item.help_text %}
+                    <small style="color: green">{{ item.help_text }}</small>
+                {% endif %}
+            </p>
+        {% endfor %}
+        {% for item in form %}
+            {% for error in item.errors %}
+                <p style="color: red">{{error}}</p>
+            {% endfor %}
+        {% endfor %}
+        {% if form.non_field_errors %}
+            <p style="color: red">{{ form.non_field_errors }}</p>
+        {% endif %}
+    <input value="Update" type="submit">
+    </form>
+</body>
+</html>

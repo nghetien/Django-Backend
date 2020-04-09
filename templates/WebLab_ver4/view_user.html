@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 style="color: green">Thông tin cá nhân</h1>
+    {% for item in my_user %}
+        <h1>---------------------</h1>
+        <p>{{ item.id }}</p>
+        <p>{{ item.email }}</p>
+        <p>{{ item.username }}</p>
+        <p>{{ item.phone }}</p>
+        <p>{{ item.date_joined }}</p>
+        <p>{{ item.last_login }}</p>
+        <p>{{ item.company }}</p>
+        <p>{{ item.address }}</p>
+        <h1>---------------------</h1>
+    {% endfor %}
+</body>
+</html>

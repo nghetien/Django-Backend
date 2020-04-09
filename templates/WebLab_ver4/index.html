@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1 type = 'color:red;'><strong>Day la trang chu</strong></h1>
+<p><a href="{% url 'home' %}">Home</a></p>
+{% if request.user.is_authenticated %}
+    <p>Hello! {{ request.user.username }}   |   <a href="{% url 'logout' %}">Logout</a> |   <a href="{% url 'update' %}">Setting</a>    |   <a href="{% url 'view_user' %}">View User</a></p>
+{% else %}
+    <p><a href="{% url 'register' %}">Dang ky</a> | <a href="{% url 'login' %}">Dang nhap</a></p>
+{% endif %}
+
+
+</body>
+</html>
