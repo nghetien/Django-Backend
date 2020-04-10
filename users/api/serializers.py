@@ -24,6 +24,10 @@ class RegistrationSerializers(serializers.ModelSerializer):
             message['message'] = "Password2 and Password are different "
             message['data'] = "null"
             raise serializers.ValidationError(message)
+            # lỗi không ở dạng key :[] vì đây k phải hàm if is_valid()
+            # blank trong register và login(không cần seria.error vẫn tự ra lỗi)
+            # register: lỗi validated_data không đọc được giá trị nhưng vẫn chạy tiếp chương trình
+            # login : data.get không đọc được giá trị thì chương trình bị dừng luôn
 
         user = User(
             email=self.validated_data['email'],
@@ -46,14 +50,16 @@ class LoginSerializers(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    def validate(self, data):
-        email = data.get('email')
-        password = data.get('password')
+    def validate(self, data): # hàm is_valid
+
+        email = data.get('email') # nếu không nhập vào thì lỗi sẽ xuất hiện tại đây
+        password = data.get('password') # nếu không nhập vào thì lỗi sẽ xuất hiện tại đây
+        #lỗi sẽ in ra ở dạng key : []
 
         if email and password:
             user = authenticate(request=self.context.get('request'),
                                 username=email, password=password)
-            if not user:
+            if not user: # lỗi dưới dạng key:[] vì hàm if se.is_valid() lỗi
                 raise serializers.ValidationError("Unable to log in with provided credentials.")
         else:
             raise serializers.ValidationError('Must include "username" and "password".')
@@ -61,20 +67,24 @@ class LoginSerializers(serializers.ModelSerializer):
         data['user'] = user
         return data
 
-# class UpdateSerializers(serializers.ModelSerializer):
-#
-#     class Meta:
-#         model = User
-#         fields = ['username','phone','company','date_of_birth',]
-#         extra_kwargs = {
-#                 'password': {'write_only': True}
-#         }
-#
-#     def save(self):
-#         if self.is_valid():
-#             username = self.cleaned_data['username']
-#             try:
-#                 user = User.objects.exclude(pk=self.instance.pk).get(username=username)
-#             except User.DoesNotExist: # nếu không tồn tại thì return lại username
-#                 return username
-#             raise forms.ValidationError('User "%s" is already in use' % user.username)
+class UpdateSerializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['username','phone','company','date_of_birth','sex',]
+        extra_kwargs = {
+                'password': {'write_only': True}
+        }
+
+
+    def create(self, slug):
+        return User.objects.create_user(slug=slug)
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.company = validated_data.get('company', instance.company)
+        instance.sex = validated_data.get('sex', instance.sex)
+        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance = super().update(instance, validated_data)
+        return instance

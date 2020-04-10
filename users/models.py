@@ -64,6 +64,8 @@ class User(AbstractBaseUser):
     phone = models.CharField(verbose_name='phone',max_length=15)
     company = models.CharField(verbose_name='company',max_length=20)
     address = models.CharField(verbose_name='address', max_length=20)
+    sex_choice = ((0,"Nữ"),(1,"Nam"),(2,"Không xác định"))
+    sex = models.IntegerField(choices=sex_choice,default=0,null=True)
 
     USERNAME_FIELD = 'email'  # user chính dùng là email
     REQUIRED_FIELDS = ['username','phone'] # bắt buộc phải có
