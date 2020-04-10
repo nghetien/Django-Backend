@@ -110,7 +110,6 @@ def update_user_api(request):
             data['company'] = user.company
             data['date_of_birth'] = user.date_of_birth
             message['data'] = data
-            return Response(message)
         else:
             message['status'] = status.HTTP_400_BAD_REQUEST
             your_error = serializers.errors
@@ -120,4 +119,4 @@ def update_user_api(request):
                 break
             message['message'] = fail
             message['data'] = "null"
-            return Response(message)
+        return Response(message)
