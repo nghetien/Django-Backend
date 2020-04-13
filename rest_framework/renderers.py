@@ -377,8 +377,8 @@ class BrowsableAPIRenderer(BaseRenderer):
     HTML renderer used to self-document the API.
     """
     media_type = 'text/html'
-    format = 'api'
-    template = 'rest_framework/api.html'
+    format = 'api_user'
+    template = 'rest_framework/api_user.html'
     filter_template = 'rest_framework/filters/base.html'
     code_style = 'emacs'
     charset = 'utf-8'

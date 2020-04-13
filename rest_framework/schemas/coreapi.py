@@ -222,10 +222,10 @@ class SchemaGenerator(BaseSchemaGenerator):
 
         For example:
 
-        /api/v1/users/
-        /api/v1/users/{pk}/
+        /api_user/v1/users/
+        /api_user/v1/users/{pk}/
 
-        The path prefix is '/api/v1'
+        The path prefix is '/api_user/v1'
         """
         prefixes = []
         for path in paths:

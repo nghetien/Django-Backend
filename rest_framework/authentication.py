@@ -54,7 +54,7 @@ class BasicAuthentication(BaseAuthentication):
     """
     HTTP Basic authentication against username/password.
     """
-    www_authenticate_realm = 'api'
+    www_authenticate_realm = 'api_user'
 
     def authenticate(self, request):
         """

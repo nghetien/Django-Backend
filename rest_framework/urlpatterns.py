@@ -93,7 +93,7 @@ def format_suffix_patterns(urlpatterns, suffix_required=False, allowed=None):
         URLs will not be used.  Defaults to `False`.
 
     allowed:
-        An optional tuple/list of allowed suffixes.  eg ['json', 'api']
+        An optional tuple/list of allowed suffixes.  eg ['json', 'api_user']
         Defaults to `None`, which allows any suffix.
     """
     suffix_kwarg = api_settings.FORMAT_SUFFIX_KWARG

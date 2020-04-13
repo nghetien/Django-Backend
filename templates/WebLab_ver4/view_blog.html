@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 style="color: green">Blog</h1>
+    {% for item in form %}
+        <h1>---------------------</h1>
+        <p>{{ item.id }}</p>
+        <p>{{ item.title }}</p>
+        <p>{{ item.body }}</p>
+        <img src="{{ item.image_cover.url }}" style="width: 500px;height: 500px">
+        <p>{{ item.date_published }}</p>
+        <p>{{ item.date_update }}</p>
+        <p>{{ item.slug }}</p>
+        <h1>---------------------</h1>
+    {% endfor %}
+</body>
+</html>

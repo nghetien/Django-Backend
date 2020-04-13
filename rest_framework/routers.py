@@ -307,7 +307,7 @@ class DefaultRouter(SimpleRouter):
     """
     include_root_view = True
     include_format_suffixes = True
-    root_view_name = 'api-root'
+    root_view_name = 'api_user-root'
     default_schema_renderers = None
     APIRootView = APIRootView
     APISchemaView = SchemaView

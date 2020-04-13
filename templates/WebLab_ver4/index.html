@@ -8,7 +8,7 @@
 <h1 type = 'color:red;'><strong>Day la trang chu</strong></h1>
 <p><a href="{% url 'home' %}">Home</a></p>
 {% if request.user.is_authenticated %}
-    <p>Hello! {{ request.user.username }}   |   <a href="{% url 'logout' %}">Logout</a> |   <a href="{% url 'update' %}">Setting</a>    |   <a href="{% url 'view_user' %}">View User</a></p>
+    <p>Hello! {{ request.user.username }}   |   <a href="{% url 'logout' %}">Logout</a> |   <a href="{% url 'update' %}">Setting</a>    |   <a href="{% url 'view_user' %}">View User</a>|   <a href="{% url 'post_blog' %}">NEW POST</a>|   <a href="{% url 'view_blog' %}">View Blog</a></p>
 {% else %}
     <p><a href="{% url 'register' %}">Dang ky</a> | <a href="{% url 'login' %}">Dang nhap</a></p>
 {% endif %}

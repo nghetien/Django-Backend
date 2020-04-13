@@ -1,15 +1,19 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.views import View
+#---------------------------------------------------------------------
 from django.contrib.auth import login,logout,authenticate,decorators
 from django.contrib.auth.hashers import make_password
+#---------------------------------------------------------------------
 from users.forms import RegisterForm,UserAuthenticateForm,UserUpdatingForm
 from users.models import User
-# from accesstoken.models import AccessToken
+#---------------------------------------------------------------------
 import hashlib
 from datetime import datetime
-
-
+#---------------------------------------------------------------------
+from blog.models import Blog,ImageBlog
+from blog.forms import CreateBlogForm
+#---------------------------------------------------------------------
 # Create your views here.
 
 
@@ -31,12 +35,6 @@ class Login(View):
             user = authenticate(email=email,password=password)
             if user:
                 login(request,user)
-                # now = datetime.now()
-                # timestamp = datetime.timestamp(now)
-                # string = email + '-' + str(timestamp)
-                # ac_tk = AccessToken(access_token=string).save()
-                # ac_tk.email_user = request.user.email
-                # ac_tk.save()
                 return redirect("home")
         else: # return lại lỗi tự form
             context['form'] = form
@@ -99,3 +97,37 @@ class ViewUser(View):
             my_user =  User.objects.all()
             context['my_user']= my_user
             return render(request,"WebLab_ver4/view_user.html",context)
+
+class PostBlog(View):
+    def get(self,request):
+        context = {}
+        user = request.user
+        if not user.is_authenticated:
+            return redirect("home")
+        else:
+            form = CreateBlogForm()
+            context['form'] = form
+            return render(request,"WebLab_ver4/new_post.html",context)
+    def post(self,request):
+        context = {}
+        user = request.user
+        if not user.is_authenticated:
+            return redirect("home")
+        else:
+            form = CreateBlogForm(request.POST or None, request.FILES or None)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                author = User.objects.filter(email=user.email).first()
+                obj.author = author
+                obj.save()
+                return redirect("home")
+            else:
+                return HttpResponse("that bai")
+
+class ViewBlog(View):
+    def get(self,request):
+        context = {}
+        form = Blog.objects.all()
+        context['form'] = form
+        return render(request,"WebLab_ver4/view_blog.html",context)
+
