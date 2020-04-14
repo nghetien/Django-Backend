@@ -1,5 +1,6 @@
 from django import forms
 from .models import Blog
+from blog.models import CommentBlog
 class CreateBlogForm(forms.ModelForm):
     class Meta:
         model = Blog
@@ -20,3 +21,19 @@ class UpdateBlogForm(forms.ModelForm):
         if commit:
             blog.save()
         return blog
+
+class CommentForm(forms.ModelForm):
+    def __init__(self,*args,**kwargs):
+        self.author = kwargs.pop('author',None)
+        self.name_blog = kwargs.pop('name_blog',None)
+        super().__init__(*args,**kwargs)
+
+    def save(self,commit=True):
+        comment = super().save(commit=False)
+        comment.author = self.author
+        comment.name_blog = self.name_blog
+        comment.save()
+
+    class Meta:
+        model = CommentBlog
+        fields = ["comment_blog",]

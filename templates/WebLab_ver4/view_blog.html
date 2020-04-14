@@ -15,6 +15,7 @@
         <p>{{ item.date_published }}</p>
         <p>{{ item.date_update }}</p>
         <p>{{ item.slug }}</p>
+        <p><a href="{% url 'coment_blog_view' item.slug %}">Blog 1</a></p>
         <h1>---------------------</h1>
     {% endfor %}
 </body>

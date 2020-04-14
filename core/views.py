@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 #---------------------------------------------------------------------
@@ -11,8 +11,8 @@ from users.models import User
 import hashlib
 from datetime import datetime
 #---------------------------------------------------------------------
-from blog.models import Blog,ImageBlog
-from blog.forms import CreateBlogForm
+from blog.models import Blog,ImageBlog,CommentBlog
+from blog.forms import CreateBlogForm,CommentForm
 #---------------------------------------------------------------------
 # Create your views here.
 
@@ -131,3 +131,28 @@ class ViewBlog(View):
         context['form'] = form
         return render(request,"WebLab_ver4/view_blog.html",context)
 
+class CommentBlogView(View):
+    def get(self,request,slug):
+        context = {}
+        form_blog = get_object_or_404(Blog,slug=slug)
+        form_comment = CommentForm()
+        all_comment = CommentBlog.objects.filter(name_blog=form_blog)
+        context['form_blog'] = form_blog
+        context['form_comment'] = form_comment
+        context['all_comment'] = all_comment
+        return render(request,"WebLab_ver4/blog_1.html",context)
+    def post(self,request,slug):
+        name_blog = get_object_or_404(Blog,slug=slug)
+        form = CommentForm(request.POST,author=request.user,name_blog=name_blog)
+        if form.is_valid():
+            context = {}
+            form_blog = Blog.objects.get(slug=slug)
+            form_comment = CommentForm()
+            all_comment = CommentBlog.objects.filter(name_blog=form_blog)
+            context['form_blog'] = form_blog
+            context['form_comment'] = form_comment
+            context['all_comment'] = all_comment
+            form.save()
+            return render(request,"WebLab_ver4/blog_1.html",context)
+        else:
+            return HttpResponse("That bai roi")
